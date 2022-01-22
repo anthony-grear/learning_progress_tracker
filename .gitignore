@@ -1,0 +1,45 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+
+##############################
+## Java
+##############################
+.mtj.tmp/
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+hs_err_pid*
+
+##############################
+## Gradle
+##############################
+bin/
+build/
+.gradle
+.gradletasknamecache
+gradle-app.setting
+!gradle-wrapper.jar
+
+##############################
+## IntelliJ
+##############################
+out/
+.idea/
+.idea_modules/
+*.iml
+*.ipr
+*.iws
+
+course-info.yaml
+course-remote-info.yaml
+Topics/
+.idea/
+Learning Progress Tracker/A detailed record/
+Learning Progress Tracker/No empty lines here/
+Learning Progress Tracker/Notification service/
+Learning Progress Tracker/Retrieving statistics/
+Learning Progress Tracker/Verify new users/
+Learning Progress Tracker/lesson-info.yaml

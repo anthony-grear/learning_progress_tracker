@@ -5,8 +5,7 @@ import java.util.Scanner;
 
 import com.sanctionco.jmail.JMail;
 
-import static tracker.Main.TrackerState.EXIT_TRACKER;
-import static tracker.Main.TrackerState.MAIN_MENU;
+import static tracker.Main.TrackerState.*;
 
 public class Main {
     private static boolean exit = false;
@@ -30,13 +29,13 @@ public class Main {
                 return mainMenuSelection.selectMainMenuCommand(input);
             }
         },
-//        ADD_STUDENT {
-//            @Override
-//            public TrackerState nextState() {
-//                //To-do: validate and add first and last name, and email address
-//                return MAIN_MENU;//To-do: change according to outcome of above statement
-//            }
-//        },
+        ADD_STUDENTS {
+            @Override
+            public TrackerState nextState() {
+                System.out.println("ADD STUDENT STATE");
+                return EXIT_TRACKER;//To-do: change according to outcome of above statement
+            }
+        },
         EXIT_TRACKER {
             @Override
             public TrackerState nextState() {
@@ -57,12 +56,30 @@ public class Main {
                 return MAIN_MENU;
             case "exit":
                 return EXIT_TRACKER;
+            case "add students":
+                return ADD_STUDENTS;
             default:
                 System.out.println("Error: unknown command!");
                 return MAIN_MENU;
         }
-
     }
+
+    TrackerState selectAddStudentsMenuCommand(String input) {
+        switch (input) {
+            case "":
+                System.out.println("no input");
+                return MAIN_MENU;
+            case "exit":
+                return EXIT_TRACKER;
+            case "add students":
+                return ADD_STUDENTS;
+            default:
+                System.out.println("Error: unknown command!");
+                return MAIN_MENU;
+        }
+    }
+
+
 
     void displayStartProgramMessage() {
         System.out.println("Learning Progress Tracker");

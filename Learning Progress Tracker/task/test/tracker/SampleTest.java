@@ -22,6 +22,26 @@ public class SampleTest {
         assertEquals(ADD_STUDENTS, menuSelect.selectMainMenuCommand(addStudent));
     }
 
+    @Test
+    void testProcessAddStudentsInputFirstLastEmailOnly() {
+        String firstLastEmail = "Jane Doe jdoe@example.com";
+        Main processString = new Main();
+        String[] firstLastEmailArray = processString.processAddStudentsInput(firstLastEmail);
+        assertEquals("Jane", firstLastEmailArray[0]);
+        assertEquals("Doe", firstLastEmailArray[1]);
+        assertEquals("jdoe@example.com", firstLastEmailArray[2]);
+    }
+
+    @Test
+    void testProcessAddStudentsInputExtendedLengthNameAndEmail() {
+        String firstLastEmail = "Jim Bo Jones Jeffrey Jobs jjobs@example.com";
+        Main processString = new Main();
+        String[] firstLastEmailArray = processString.processAddStudentsInput(firstLastEmail);
+        assertEquals("Jim", firstLastEmailArray[0]);
+        assertEquals("Bo Jones Jeffrey Jobs", firstLastEmailArray[1]);
+        assertEquals("jjobs@example.com", firstLastEmailArray[2]);
+    }
+
     @Nested
     public class NestedSampleTest {
         @BeforeEach

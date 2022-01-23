@@ -81,7 +81,19 @@ public class Main {
         }
     }
 
-
+    String[] processAddStudentsInput(String addStudentsInput) {
+        String[] inputLine = addStudentsInput.split(" ");
+        String[] firstLastEmail = new String[3];
+        firstLastEmail[0] = inputLine[0];
+        firstLastEmail[2] = inputLine[inputLine.length - 1];
+        StringBuilder lastName = new StringBuilder();
+        for (int i = 0; i < inputLine.length - 2; i++) {
+            lastName.append(inputLine[i+1]);
+            lastName.append(" ");
+        }
+        firstLastEmail[1] = lastName.toString().strip();
+        return firstLastEmail;
+    }
 
     void displayStartProgramMessage() {
         System.out.println("Learning Progress Tracker");

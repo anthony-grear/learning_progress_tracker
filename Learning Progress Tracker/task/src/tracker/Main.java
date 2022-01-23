@@ -26,7 +26,8 @@ public class Main {
             @Override
             public TrackerState nextState() {
                 String input = scanner.nextLine().strip();
-                return selectMainMenuCommand(input);
+                Main mainMenuSelection = new Main();
+                return mainMenuSelection.selectMainMenuCommand(input);
             }
         },
 //        ADD_STUDENT {
@@ -49,7 +50,7 @@ public class Main {
         public abstract TrackerState nextState();
     }
 
-    static TrackerState selectMainMenuCommand(String input) {
+    TrackerState selectMainMenuCommand(String input) {
         switch (input) {
             case "":
                 System.out.println("no input");

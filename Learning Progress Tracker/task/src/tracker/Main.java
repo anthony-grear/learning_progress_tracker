@@ -9,7 +9,6 @@ import static tracker.Main.TrackerState.EXIT_TRACKER;
 import static tracker.Main.TrackerState.MAIN_MENU;
 
 public class Main {
-    static Scanner scanner = new Scanner(System.in);
     private static boolean exit = false;
 
     public enum TrackerState {
@@ -25,6 +24,7 @@ public class Main {
         MAIN_MENU{
             @Override
             public TrackerState nextState() {
+                Scanner scanner = new Scanner(System.in);
                 String input = scanner.nextLine().strip();
                 Main mainMenuSelection = new Main();
                 return mainMenuSelection.selectMainMenuCommand(input);

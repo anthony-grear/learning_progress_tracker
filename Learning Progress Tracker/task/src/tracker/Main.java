@@ -17,7 +17,8 @@ public class Main {
         START_TRACKER {
             @Override
             public TrackerState nextState() {
-                displayStartProgramMessage();
+                Main startMessage = new Main();
+                startMessage.displayStartProgramMessage();
                 return MAIN_MENU;
             }
         },
@@ -38,7 +39,8 @@ public class Main {
         EXIT_TRACKER {
             @Override
             public TrackerState nextState() {
-                displayExitProgramMessage();
+                Main exitMessage = new Main();
+                exitMessage.displayExitProgramMessage();
                 exit = true;
                 return this;
             }
@@ -61,11 +63,11 @@ public class Main {
 
     }
 
-    static void displayStartProgramMessage() {
+    void displayStartProgramMessage() {
         System.out.println("Learning Progress Tracker");
     }
 
-    static void displayExitProgramMessage() {
+    void displayExitProgramMessage() {
         System.out.println("Bye!");
     }
 

@@ -8,8 +8,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static tracker.Main.displayExitProgramMessage;
-import static tracker.Main.displayStartProgramMessage;
+;
 
 public class SampleTest {
     private final PrintStream standardOut = System.out;
@@ -22,13 +21,17 @@ public class SampleTest {
 
     @Test
     void testDisplayStartProgramMessage() {
-        displayStartProgramMessage();
+        Main main = new Main();
+        main.displayStartProgramMessage();
         assertEquals("Learning Progress Tracker", outputStreamCaptor.toString().trim());
     }
 
+
+
     @Test
     void testDisplayExitProgramMessage() {
-        displayExitProgramMessage();
+        Main main = new Main();
+        main.displayExitProgramMessage();
         assertEquals("Bye!", outputStreamCaptor.toString().trim());
     }
 

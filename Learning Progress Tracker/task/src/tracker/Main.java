@@ -32,8 +32,11 @@ public class Main {
         ADD_STUDENTS {
             @Override
             public TrackerState nextState() {
-                System.out.println("ADD STUDENT STATE");
-                return EXIT_TRACKER;//To-do: change according to outcome of above statement
+                System.out.println("Enter student credentials or 'back' to return");
+                Scanner scanner = new Scanner(System.in);
+                String input = scanner.nextLine().strip();
+                Main addStudentsMenuSelection = new Main();
+                return addStudentsMenuSelection.selectAddStudentsMenuCommand(input);
             }
         },
         EXIT_TRACKER {
@@ -58,6 +61,9 @@ public class Main {
                 return EXIT_TRACKER;
             case "add students":
                 return ADD_STUDENTS;
+            case "back":
+                System.out.println("Enter 'exit' to exit the program.");
+                return MAIN_MENU;
             default:
                 System.out.println("Error: unknown command!");
                 return MAIN_MENU;
@@ -66,13 +72,9 @@ public class Main {
 
     TrackerState selectAddStudentsMenuCommand(String input) {
         switch (input) {
-            case "":
-                System.out.println("no input");
+            case "back":
+
                 return MAIN_MENU;
-            case "exit":
-                return EXIT_TRACKER;
-            case "add students":
-                return ADD_STUDENTS;
             default:
                 System.out.println("Error: unknown command!");
                 return MAIN_MENU;

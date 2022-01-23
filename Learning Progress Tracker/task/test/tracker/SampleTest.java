@@ -67,6 +67,15 @@ public class SampleTest {
             assertEquals("Error: unknown command!", outputStreamCaptor.toString().trim());
         }
 
+        @Test
+        void testMainMenuSelectionBack() {
+            Main menuSelect = new Main();
+            String back = "back";
+            assertEquals(MAIN_MENU, menuSelect.selectMainMenuCommand(back));
+            assertEquals("Enter 'exit' to exit the program.", outputStreamCaptor.toString().trim());
+        }
+
+
         @AfterEach
         public void tearDown() {
             System.setOut(standardOut);

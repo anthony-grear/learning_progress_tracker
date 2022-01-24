@@ -2,6 +2,8 @@ package tracker;
 
 
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.sanctionco.jmail.JMail;
 
@@ -93,6 +95,13 @@ public class Main {
         }
         firstLastEmail[1] = lastName.toString().strip();
         return firstLastEmail;
+    }
+
+    boolean validateName(String name) {
+        Pattern p = Pattern.compile("--|-'|'-|''|^[-'].|.[-']$|[^A-Za-z-']");
+        Matcher m = p.matcher(name);
+        boolean notValidName = m.matches();
+        return notValidName;
     }
 
     void displayStartProgramMessage() {

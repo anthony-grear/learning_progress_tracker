@@ -16,6 +16,13 @@ public class SampleTest {
     private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
 
     @Test
+    void detectConsecutiveHyphensInName() {
+        String name = "Ant--hony"; //regex should detect double hyphen in a name
+        Main m = new Main();
+        assertEquals(true, m.invalidateName(name));
+    }
+
+    @Test
     void testMainMenuSelectionAddStudents() {
         Main menuSelect = new Main();
         String addStudent = "add students";

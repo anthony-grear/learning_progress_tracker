@@ -97,11 +97,10 @@ public class Main {
         return firstLastEmail;
     }
 
-    boolean validateName(String name) {
+    boolean invalidateName(String name) {
         Pattern p = Pattern.compile("--|-'|'-|''|^[-'].|.[-']$|[^A-Za-z-']");
         Matcher m = p.matcher(name);
-        boolean notValidName = m.matches();
-        return notValidName;
+        return m.find();
     }
 
     void displayStartProgramMessage() {

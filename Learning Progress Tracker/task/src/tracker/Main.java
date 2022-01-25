@@ -97,8 +97,12 @@ public class Main {
         return firstLastEmail;
     }
 
+    /*returns true on any non-alphabet character, except apostrophe and hypen.
+    Name also cannot begin or end with apostrophe or hyphen.
+    Apostrophe and hyphen cannot be adjacent.
+     */
     boolean invalidateName(String name) {
-        Pattern p = Pattern.compile("--|-'|'-|''|^[-'].|.[-']$|[^A-Za-z-']");
+        Pattern p = Pattern.compile("--|-'|'-|''|^[-'].|.[-']$|[^A-Za-z-' ]");
         Matcher m = p.matcher(name);
         return m.find();
     }

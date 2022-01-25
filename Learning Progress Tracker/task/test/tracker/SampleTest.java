@@ -16,10 +16,94 @@ public class SampleTest {
     private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
 
     @Test
+    void missSpaceInName() {
+        String name = "Anth ony"; //regex should detect adjacent hyphen apostrophe in a name
+        Main m = new Main();
+        assertFalse(m.invalidateName(name));
+    }
+
+    @Test
+    void missNormalName() {
+        String name = "Anthony"; //regex should detect adjacent hyphen apostrophe in a name
+        Main m = new Main();
+        assertFalse(m.invalidateName(name));
+    }
+
+    @Test
+    void missSingleApostrophe() {
+        String name = "Anth'ony"; //regex should detect adjacent hyphen apostrophe in a name
+        Main m = new Main();
+        assertFalse(m.invalidateName(name));
+    }
+
+    @Test
+    void missSingleHyphen() {
+        String name = "Anth-ony"; //regex should detect adjacent hyphen apostrophe in a name
+        Main m = new Main();
+        assertFalse(m.invalidateName(name));
+    }
+
+    @Test
+    void detectInvalidCharacter() {
+        String name = "Anth@ony"; //regex should detect adjacent hyphen apostrophe in a name
+        Main m = new Main();
+        assertTrue(m.invalidateName(name));
+    }
+
+    @Test
+    void detectStartWithHyphen() {
+        String name = "-Anthony"; //regex should detect adjacent hyphen apostrophe in a name
+        Main m = new Main();
+        assertTrue(m.invalidateName(name));
+    }
+
+    @Test
+    void detectEndWithHyphen() {
+        String name = "Anthony-"; //regex should detect adjacent hyphen apostrophe in a name
+        Main m = new Main();
+        assertTrue(m.invalidateName(name));
+    }
+
+    @Test
+    void detectEndWithApostrophe() {
+        String name = "Anthony'"; //regex should detect adjacent hyphen apostrophe in a name
+        Main m = new Main();
+        assertTrue(m.invalidateName(name));
+    }
+
+    @Test
+    void detectStartWithApostrophe() {
+        String name = "'Anthony"; //regex should detect adjacent hyphen apostrophe in a name
+        Main m = new Main();
+        assertTrue(m.invalidateName(name));
+    }
+
+    @Test
+    void detectAdjacentApostropheHyphenInName() {
+        String name = "Antho'-ny"; //regex should detect adjacent hyphen apostrophe in a name
+        Main m = new Main();
+        assertTrue(m.invalidateName(name));
+    }
+
+    @Test
+    void detectAdjacentHyphenApostropheInName() {
+        String name = "Antho-'ny"; //regex should detect adjacent hyphen apostrophe in a name
+        Main m = new Main();
+        assertTrue(m.invalidateName(name));
+    }
+
+    @Test
+    void detectConsecutiveApostrophesInName() {
+        String name = "Antho''ny"; //regex should detect double apostrophes in a name
+        Main m = new Main();
+        assertTrue(m.invalidateName(name));
+    }
+
+    @Test
     void detectConsecutiveHyphensInName() {
         String name = "Ant--hony"; //regex should detect double hyphen in a name
         Main m = new Main();
-        assertEquals(true, m.invalidateName(name));
+        assertTrue(m.invalidateName(name));
     }
 
     @Test

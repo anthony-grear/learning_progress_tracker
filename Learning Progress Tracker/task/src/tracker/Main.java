@@ -4,7 +4,6 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.sanctionco.jmail.JMail;
 import org.jetbrains.annotations.NotNull;
 
 import static tracker.Main.TrackerState.*;
@@ -119,7 +118,10 @@ public class Main {
     }
 
     boolean validateEmail(String email) {
-        return JMail.isValid(email);
+        Pattern p = Pattern.compile("^[^@]+@[^@]+\\.[^@]+$");
+        Matcher m = p.matcher(email);
+        return (m.find());
+
     }
 
     /*returns true on any non-alphabet character, except apostrophe and hypen.
@@ -127,6 +129,9 @@ public class Main {
     Apostrophe and hyphen cannot be adjacent.
      */
     boolean invalidateName(String name) {
+        if (name.length() < 2) {
+            return true;
+        }
         Pattern p = Pattern.compile("--|-'|'-|''|^[-'].|.[-']$|[^A-Za-z-' ]");
         Matcher m = p.matcher(name);
         return m.find();
@@ -145,9 +150,6 @@ public class Main {
         while (!exit) {
             state = state.nextState();
         }
-//        Main m = new Main();
-//        String[] parsedString = m.splitAddStudentsUserInput("exit");
-//        System.out.println(Arrays.toString(parsedString));
-//        m.addStudents();
+
     }
 }

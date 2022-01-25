@@ -30,12 +30,12 @@ public class SampleTest {
         assertFalse(m.validateEmail(email));
     }
 
-//    @Test
-//    void rejectSpaces() {
-//        String email = "Joe Smith <email@example.com>";
-//        Main m = new Main();
-//        assertFalse(m.validateEmail(email));
-//    }
+    @Test
+    void rejectNumericEmail() {
+        String email = "1@1.1";
+        Main m = new Main();
+        assertTrue(m.validateEmail(email));
+    }
 
     @Test
     void rejectMissingLocalName() {
@@ -79,12 +79,12 @@ public class SampleTest {
         assertTrue(m.validateEmail(email));
     }
 
-//    @Test
-//    void validateSimpleEmailIPDomain() {
-//        String email = "email@123.123.123.123";
-//        Main m = new Main();
-//        assertTrue(m.validateEmail(email));
-//    }
+    @Test
+    void rejectEmailWithoutDot() {
+        String email = "email@emailxyz";
+        Main m = new Main();
+        assertFalse(m.validateEmail(email));
+    }
 
     @Test
     void validateSimpleEmailPlus() {
@@ -119,6 +119,13 @@ public class SampleTest {
         String name = "Anth ony"; //regex should return false because this is a valid name
         Main m = new Main();
         assertFalse(m.invalidateName(name));
+    }
+
+    @Test
+    void detectShortName() {
+        String name = "A"; //regex should return true because this is a invalid name
+        Main m = new Main();
+        assertTrue(m.invalidateName(name));
     }
 
     @Test

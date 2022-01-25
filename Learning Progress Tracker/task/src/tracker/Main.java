@@ -1,11 +1,11 @@
 package tracker;
 
-
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.sanctionco.jmail.JMail;
+import org.jetbrains.annotations.NotNull;
 
 import static tracker.Main.TrackerState.*;
 
@@ -34,11 +34,8 @@ public class Main {
         ADD_STUDENTS {
             @Override
             public TrackerState nextState() {
-                System.out.println("Enter student credentials or 'back' to return");
-                Scanner scanner = new Scanner(System.in);
-                String input = scanner.nextLine().strip();
-                Main menuSelection = new Main();
-                return menuSelection.selectAddStudentsMenuCommand(input);
+                Main m = new Main();
+                return m.addStudents();
             }
         },
         EXIT_TRACKER {
@@ -54,7 +51,7 @@ public class Main {
         public abstract TrackerState nextState();
     }
 
-    TrackerState selectMainMenuCommand(String input) {
+    TrackerState selectMainMenuCommand(@NotNull String input) {
         switch (input) {
             case "":
                 System.out.println("no input");
@@ -72,28 +69,52 @@ public class Main {
         }
     }
 
-    TrackerState selectAddStudentsMenuCommand(String input) {
-        switch (input) {
-            case "back":
-                
-                return MAIN_MENU;
-            default:
-                System.out.println("Error: unknown command!");
-                return MAIN_MENU;
-        }
+    TrackerState addStudents() {
+        //loop until back is entered
+        int count = 0;
+        String input;
+        System.out.println("Enter student credentials or 'back' to return");
+        do {
+            Scanner scanner = new Scanner(System.in);
+            input = scanner.nextLine().strip();
+            String[] parsedString = splitAddStudentsUserInput(input);
+            if ("back".equals(input)) {
+                break;
+            } else if (parsedString[0] == null || parsedString[1] == null || parsedString[2] == null) {
+                System.out.println("Incorrect credentials.");
+            } else if (invalidateName(parsedString[0])) {
+                System.out.println("Incorrect first name.");
+            } else if (invalidateName(parsedString[1])) {
+                System.out.println("Incorrect last name.");
+            } else if (!validateEmail(parsedString[2])) {
+                System.out.println("Incorrect email.");
+            } else {
+                System.out.println("The student has been added.");
+                count++;
+            }
+        } while (true);
+        System.out.println("Total " + count + " students have been added.");
+        return MAIN_MENU;
     }
 
-    String[] splitAddStudentsUserInput(String addStudentsInput) {
+    String[] splitAddStudentsUserInput(@NotNull String addStudentsInput) {
         String[] inputLine = addStudentsInput.split(" ");
+        List<String> list = Arrays.asList(inputLine);
         String[] firstLastEmail = new String[3];
-        firstLastEmail[0] = inputLine[0];
-        firstLastEmail[2] = inputLine[inputLine.length - 1];
-        StringBuilder lastName = new StringBuilder();
-        for (int i = 0; i < inputLine.length - 2; i++) {
-            lastName.append(inputLine[i+1]);
-            lastName.append(" ");
+        if (list.size() >= 3) {
+            firstLastEmail[0] = list.get(0);
+            firstLastEmail[2] = list.get(list.size() - 1);
+            StringBuilder lastName = new StringBuilder();
+            for (int i = 0; i < inputLine.length - 2; i++) {
+                lastName.append(inputLine[i+1]);
+                lastName.append(" ");
+            }
+            firstLastEmail[1] = lastName.toString().strip();
+        } else {
+           for (int i = 0; i < list.size(); i++) {
+               firstLastEmail[i] = list.get(i);
+           }
         }
-        firstLastEmail[1] = lastName.toString().strip();
         return firstLastEmail;
     }
 
@@ -124,7 +145,9 @@ public class Main {
         while (!exit) {
             state = state.nextState();
         }
-
-
+//        Main m = new Main();
+//        String[] parsedString = m.splitAddStudentsUserInput("exit");
+//        System.out.println(Arrays.toString(parsedString));
+//        m.addStudents();
     }
 }

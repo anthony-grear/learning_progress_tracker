@@ -213,6 +213,16 @@ public class SampleTest {
     }
 
     @Test
+    void testProcessAddStudentsInputOneWord() {
+        String firstLastEmail = "exit";
+        Main processString = new Main();
+        String[] firstLastEmailArray = processString.splitAddStudentsUserInput(firstLastEmail);
+        assertEquals("exit", firstLastEmailArray[0]);
+        assertEquals(null, firstLastEmailArray[1]);
+        assertEquals(null, firstLastEmailArray[2]);
+    }
+
+    @Test
     void testProcessAddStudentsInputFirstLastEmailOnly() {
         String firstLastEmail = "Jane Doe jdoe@example.com";
         Main processString = new Main();

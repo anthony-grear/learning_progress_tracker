@@ -15,93 +15,192 @@ public class SampleTest {
     private final PrintStream standardOut = System.out;
     private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
 
+
+    @Test
+    void rejectMoreThanOneAt() {
+        String email = "email@example@example.com";
+        Main m = new Main();
+        assertFalse(m.validateEmail(email));
+    }
+
+    @Test
+    void rejectMissingAt() {
+        String email = "email.example.com";
+        Main m = new Main();
+        assertFalse(m.validateEmail(email));
+    }
+
+//    @Test
+//    void rejectSpaces() {
+//        String email = "Joe Smith <email@example.com>";
+//        Main m = new Main();
+//        assertFalse(m.validateEmail(email));
+//    }
+
+    @Test
+    void rejectMissingLocalName() {
+        String email = "@example.com";
+        Main m = new Main();
+        assertFalse(m.validateEmail(email));
+    }
+
+    @Test
+    void rejectRestrictedCharacters() {
+        String email = "#@%^%#$@#$@#.com";
+        Main m = new Main();
+        assertFalse(m.validateEmail(email));
+    }
+
+    @Test
+    void rejectAddress() {
+        String email = "plainaddress";
+        Main m = new Main();
+        assertFalse(m.validateEmail(email));
+    }
+
+    @Test
+    void validateSimpleEmailNumeric() {
+        String email = "1234567890@example.com";
+        Main m = new Main();
+        assertTrue(m.validateEmail(email));
+    }
+
+    @Test
+    void validateSimpleEmailInQuotes() {
+        String email = "\"email\"@example.com";
+        Main m = new Main();
+        assertTrue(m.validateEmail(email));
+    }
+
+    @Test
+    void validateSimpleEmailIPDomainInBrackets() {
+        String email = "email@[123.123.123.123]";
+        Main m = new Main();
+        assertTrue(m.validateEmail(email));
+    }
+
+//    @Test
+//    void validateSimpleEmailIPDomain() {
+//        String email = "email@123.123.123.123";
+//        Main m = new Main();
+//        assertTrue(m.validateEmail(email));
+//    }
+
+    @Test
+    void validateSimpleEmailPlus() {
+        String email = "firstname+lastname@example.com";
+        Main m = new Main();
+        assertTrue(m.validateEmail(email));
+    }
+
+    @Test
+    void validateSimpleEmailSubdomain() {
+        String email = "email@subdomain.example.com";
+        Main m = new Main();
+        assertTrue(m.validateEmail(email));
+    }
+
+    @Test
+    void validateSimpleEmailPeriod() {
+        String email = "firstname.lastname@example.com";
+        Main m = new Main();
+        assertTrue(m.validateEmail(email));
+    }
+
+    @Test
+    void validateSimpleEmail() {
+        String email = "name@example.com";
+        Main m = new Main();
+        assertTrue(m.validateEmail(email));
+    }
+
     @Test
     void missSpaceInName() {
-        String name = "Anth ony"; //regex should detect adjacent hyphen apostrophe in a name
+        String name = "Anth ony"; //regex should return false because this is a valid name
         Main m = new Main();
         assertFalse(m.invalidateName(name));
     }
 
     @Test
     void missNormalName() {
-        String name = "Anthony"; //regex should detect adjacent hyphen apostrophe in a name
+        String name = "Anthony"; //regex should return false because this is a valid name
         Main m = new Main();
         assertFalse(m.invalidateName(name));
     }
 
     @Test
     void missSingleApostrophe() {
-        String name = "Anth'ony"; //regex should detect adjacent hyphen apostrophe in a name
+        String name = "Anth'ony"; //regex should return false because this is a valid name
         Main m = new Main();
         assertFalse(m.invalidateName(name));
     }
 
     @Test
     void missSingleHyphen() {
-        String name = "Anth-ony"; //regex should detect adjacent hyphen apostrophe in a name
+        String name = "Anth-ony"; //regex should return false because this is a valid name
         Main m = new Main();
         assertFalse(m.invalidateName(name));
     }
 
     @Test
     void detectInvalidCharacter() {
-        String name = "Anth@ony"; //regex should detect adjacent hyphen apostrophe in a name
+        String name = "Anth@ony"; //regex should return true because this symbol is not allowed
         Main m = new Main();
         assertTrue(m.invalidateName(name));
     }
 
     @Test
     void detectStartWithHyphen() {
-        String name = "-Anthony"; //regex should detect adjacent hyphen apostrophe in a name
+        String name = "-Anthony"; //regex should return true because no first character hyphen
         Main m = new Main();
         assertTrue(m.invalidateName(name));
     }
 
     @Test
     void detectEndWithHyphen() {
-        String name = "Anthony-"; //regex should detect adjacent hyphen apostrophe in a name
+        String name = "Anthony-"; //regex should return true because no end character hyphen
         Main m = new Main();
         assertTrue(m.invalidateName(name));
     }
 
     @Test
     void detectEndWithApostrophe() {
-        String name = "Anthony'"; //regex should detect adjacent hyphen apostrophe in a name
+        String name = "Anthony'"; //regex should return true because no end character with apostrophe
         Main m = new Main();
         assertTrue(m.invalidateName(name));
     }
 
     @Test
     void detectStartWithApostrophe() {
-        String name = "'Anthony"; //regex should detect adjacent hyphen apostrophe in a name
+        String name = "'Anthony"; //regex should return true because no first character wih apostrophe
         Main m = new Main();
         assertTrue(m.invalidateName(name));
     }
 
     @Test
     void detectAdjacentApostropheHyphenInName() {
-        String name = "Antho'-ny"; //regex should detect adjacent hyphen apostrophe in a name
+        String name = "Antho'-ny"; //regex should return true because no adjacent apostrophe hyphen in a name
         Main m = new Main();
         assertTrue(m.invalidateName(name));
     }
 
     @Test
     void detectAdjacentHyphenApostropheInName() {
-        String name = "Antho-'ny"; //regex should detect adjacent hyphen apostrophe in a name
+        String name = "Antho-'ny"; //regex should return true because no adjacent hyphen apostrophe in a name
         Main m = new Main();
         assertTrue(m.invalidateName(name));
     }
 
     @Test
     void detectConsecutiveApostrophesInName() {
-        String name = "Antho''ny"; //regex should detect double apostrophes in a name
+        String name = "Antho''ny"; //regex should return true because no double apostrophes in a name
         Main m = new Main();
         assertTrue(m.invalidateName(name));
     }
 
     @Test
     void detectConsecutiveHyphensInName() {
-        String name = "Ant--hony"; //regex should detect double hyphen in a name
+        String name = "Ant--hony"; //regex should return true because no double hyphen in a name
         Main m = new Main();
         assertTrue(m.invalidateName(name));
     }
@@ -117,7 +216,7 @@ public class SampleTest {
     void testProcessAddStudentsInputFirstLastEmailOnly() {
         String firstLastEmail = "Jane Doe jdoe@example.com";
         Main processString = new Main();
-        String[] firstLastEmailArray = processString.processAddStudentsInput(firstLastEmail);
+        String[] firstLastEmailArray = processString.splitAddStudentsUserInput(firstLastEmail);
         assertEquals("Jane", firstLastEmailArray[0]);
         assertEquals("Doe", firstLastEmailArray[1]);
         assertEquals("jdoe@example.com", firstLastEmailArray[2]);
@@ -127,7 +226,7 @@ public class SampleTest {
     void testProcessAddStudentsInputExtendedLengthNameAndEmail() {
         String firstLastEmail = "Jim Bo Jones Jeffrey Jobs jjobs@example.com";
         Main processString = new Main();
-        String[] firstLastEmailArray = processString.processAddStudentsInput(firstLastEmail);
+        String[] firstLastEmailArray = processString.splitAddStudentsUserInput(firstLastEmail);
         assertEquals("Jim", firstLastEmailArray[0]);
         assertEquals("Bo Jones Jeffrey Jobs", firstLastEmailArray[1]);
         assertEquals("jjobs@example.com", firstLastEmailArray[2]);

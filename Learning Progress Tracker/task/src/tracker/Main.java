@@ -37,8 +37,8 @@ public class Main {
                 System.out.println("Enter student credentials or 'back' to return");
                 Scanner scanner = new Scanner(System.in);
                 String input = scanner.nextLine().strip();
-                Main addStudentsMenuSelection = new Main();
-                return addStudentsMenuSelection.selectAddStudentsMenuCommand(input);
+                Main menuSelection = new Main();
+                return menuSelection.selectAddStudentsMenuCommand(input);
             }
         },
         EXIT_TRACKER {
@@ -75,7 +75,7 @@ public class Main {
     TrackerState selectAddStudentsMenuCommand(String input) {
         switch (input) {
             case "back":
-
+                
                 return MAIN_MENU;
             default:
                 System.out.println("Error: unknown command!");
@@ -83,7 +83,7 @@ public class Main {
         }
     }
 
-    String[] processAddStudentsInput(String addStudentsInput) {
+    String[] splitAddStudentsUserInput(String addStudentsInput) {
         String[] inputLine = addStudentsInput.split(" ");
         String[] firstLastEmail = new String[3];
         firstLastEmail[0] = inputLine[0];
@@ -95,6 +95,10 @@ public class Main {
         }
         firstLastEmail[1] = lastName.toString().strip();
         return firstLastEmail;
+    }
+
+    boolean validateEmail(String email) {
+        return JMail.isValid(email);
     }
 
     /*returns true on any non-alphabet character, except apostrophe and hypen.
@@ -121,13 +125,6 @@ public class Main {
             state = state.nextState();
         }
 
-//        String email = "email";
-//
-//        if (JMail.isValid(email)) {
-//            System.out.println("Valid");
-//        } else {
-//            System.out.println("Invalid");
-//        }
 
     }
 }

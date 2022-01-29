@@ -82,7 +82,6 @@ public class Main {
        }
     }
 
-
     boolean validateForAddStudents(String[] parsedString) {
         if (parsedString[0] == null || parsedString[1] == null || parsedString[2] == null) {
             System.out.println("Incorrect credentials.");
@@ -101,6 +100,17 @@ public class Main {
         }
     }
 
+    void addStudentProfile(String[] parsedString) {
+        Student student = new Student(parsedString[2], parsedString[0], parsedString[1]);
+        emailMap.put(parsedString[2], student);
+        Main m = new Main();
+        String id = m.generateUserId();
+        while (idMap.containsKey(id)) {
+            id = m.generateUserId();
+        }
+        idMap.put(id, parsedString[2]);
+        student.userId = id;
+    }
 
     TrackerState addStudents() {
         //loop until back is entered
@@ -115,7 +125,11 @@ public class Main {
                 break;
             } else if (validateForAddStudents(parsedString)) {
                assert true;
+            } else if (emailMap.containsKey(parsedString[2])) {
+                System.out.println("This email is already taken.");
             } else {
+                Main m = new Main();
+                m.addStudentProfile(parsedString);
                 System.out.println("The student has been added.");
                 count++;
             }

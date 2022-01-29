@@ -96,6 +96,18 @@ public class Main {
         return MAIN_MENU;
     }
 
+    String generateUserId() {
+        StringBuilder userId = new StringBuilder();
+        for (int i = 0; i < 5; i++) {
+            Random r = new Random();
+            char c = (char)(r.nextInt(26) + 'A');
+            String s = Character.toString(c);
+            userId.append(s);
+        }
+        String userIdString = userId.toString();
+        return userIdString;
+    }
+
     String[] splitAddStudentsUserInput(@NotNull String addStudentsInput) {
         String[] inputLine = addStudentsInput.split(" ");
         List<String> list = Arrays.asList(inputLine);

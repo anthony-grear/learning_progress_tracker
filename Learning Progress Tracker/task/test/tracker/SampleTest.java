@@ -10,6 +10,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static tracker.Main.TrackerState.*;
@@ -17,6 +19,13 @@ import static tracker.Main.TrackerState.*;
 public class SampleTest {
     private final PrintStream standardOut = System.out;
     private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+
+    @Test
+    void checkGenerateUserId() {
+        Main main = new Main();
+        boolean b = Pattern.matches("[A-Z]{5}", main.generateUserId());
+        assertTrue(b);
+    }
 
     @ParameterizedTest
     @MethodSource("stringFactoryInvalidEmails")

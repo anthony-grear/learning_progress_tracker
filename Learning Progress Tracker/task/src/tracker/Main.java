@@ -82,6 +82,7 @@ public class Main {
        }
     }
 
+
     boolean validateForAddStudents(String[] parsedString) {
         if (parsedString[0] == null || parsedString[1] == null || parsedString[2] == null) {
             System.out.println("Incorrect credentials.");
@@ -99,6 +100,7 @@ public class Main {
             return false;
         }
     }
+
 
     TrackerState addStudents() {
         //loop until back is entered

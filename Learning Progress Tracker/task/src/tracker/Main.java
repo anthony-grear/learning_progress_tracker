@@ -10,6 +10,8 @@ import static tracker.Main.TrackerState.*;
 
 public class Main {
     private static boolean exit = false;
+    static Map<String, Student> emailMap = new HashMap<>();
+    static Map<String, String> idMap = new HashMap<>();
 
     public enum TrackerState {
 
@@ -66,6 +68,18 @@ public class Main {
                 System.out.println("Error: unknown command!");
                 return MAIN_MENU;
         }
+    }
+
+    void listStudents() {
+       if (emailMap.isEmpty()) {
+           System.out.println("No students found");
+       } else {
+           System.out.println("Students:");
+           for (Map.Entry<String, Student> entry : emailMap.entrySet()) {
+               Student s = entry.getValue();
+               System.out.println(s.userId);
+           }
+       }
     }
 
     TrackerState addStudents() {
@@ -162,6 +176,10 @@ public class Main {
         while (!exit) {
             state = state.nextState();
         }
-
+//          Student newStudent = new Student("example@email.com", "Frank", "Costanza",
+//                  "ABCDE", 1,2,3,4);
+//          emailMap.put("example@email.com", newStudent);
+//          Main m = new Main();
+//          m.listStudents();
     }
 }

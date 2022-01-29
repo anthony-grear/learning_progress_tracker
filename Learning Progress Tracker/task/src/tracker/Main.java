@@ -39,6 +39,21 @@ public class Main {
                 return m.addStudents();
             }
         },
+        ADD_POINTS {
+            @Override
+            public TrackerState nextState() {
+                Main m = new Main();
+                return MAIN_MENU;
+            }
+        },
+        FIND_STUDENT {
+            @Override
+            public TrackerState nextState() {
+                Main m = new Main();
+                m.findStudent();
+                return MAIN_MENU;
+            }
+        },
         EXIT_TRACKER {
             @Override
             public TrackerState nextState() {
@@ -64,10 +79,36 @@ public class Main {
             case "back":
                 System.out.println("Enter 'exit' to exit the program.");
                 return MAIN_MENU;
+            case "list":
+                Main m = new Main();
+                m.listStudents();
+                return MAIN_MENU;
+            case "find":
+                return FIND_STUDENT;
             default:
                 System.out.println("Error: unknown command!");
                 return MAIN_MENU;
         }
+    }
+
+    TrackerState findStudent() {
+        System.out.println("Enter an id or 'back' to return:");
+        String inputUserId;
+        do {
+            Scanner scanner = new Scanner(System.in);
+            inputUserId = scanner.next();
+            if ("back".equals(inputUserId)) {
+                return MAIN_MENU;
+            } else if (idMap.containsKey(inputUserId)) {
+                String studentEmail = idMap.get(inputUserId);
+                Student student = emailMap.get(studentEmail);
+                System.out.println(inputUserId + " points: Java=" + student.javaPoints + "; DSA=" + student.dsaPoints +
+                        "; Databases=" + student.databasesPoints + "; Spring=" + student.springPoints);
+            } else {
+                System.out.println("No student is found for id=" + inputUserId);
+            }
+        } while (!idMap.containsKey(inputUserId));
+        return MAIN_MENU;
     }
 
     void listStudents() {

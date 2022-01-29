@@ -82,6 +82,24 @@ public class Main {
        }
     }
 
+    boolean validateForAddStudents(String[] parsedString) {
+        if (parsedString[0] == null || parsedString[1] == null || parsedString[2] == null) {
+            System.out.println("Incorrect credentials.");
+            return true;
+        } else if (invalidateName(parsedString[0])) {
+            System.out.println("Incorrect first name.");
+            return true;
+        } else if (invalidateName(parsedString[1])) {
+            System.out.println("Incorrect last name.");
+            return true;
+        } else if ((!validateEmail(parsedString[2]))) {
+            System.out.println("Incorrect email.");
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     TrackerState addStudents() {
         //loop until back is entered
         int count = 0;
@@ -93,14 +111,8 @@ public class Main {
             String[] parsedString = splitAddStudentsUserInput(input);
             if ("back".equals(input)) {
                 break;
-            } else if (parsedString[0] == null || parsedString[1] == null || parsedString[2] == null) {
-                System.out.println("Incorrect credentials.");
-            } else if (invalidateName(parsedString[0])) {
-                System.out.println("Incorrect first name.");
-            } else if (invalidateName(parsedString[1])) {
-                System.out.println("Incorrect last name.");
-            } else if (!validateEmail(parsedString[2])) {
-                System.out.println("Incorrect email.");
+            } else if (validateForAddStudents(parsedString)) {
+               assert true;
             } else {
                 System.out.println("The student has been added.");
                 count++;

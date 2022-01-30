@@ -42,7 +42,6 @@ public class Main {
         ADD_POINTS {
             @Override
             public TrackerState nextState() {
-                System.out.println("Enter an id and points or 'back' to return:");
                 Main m = new Main();
                 return m.addPoints();
             }
@@ -86,6 +85,9 @@ public class Main {
                 return MAIN_MENU;
             case "find":
                 return FIND_STUDENT;
+            case "add points":
+                System.out.println("Enter an id and points or 'back' to return:");
+                return ADD_POINTS;
             default:
                 System.out.println("Error: unknown command!");
                 return MAIN_MENU;
@@ -123,6 +125,27 @@ public class Main {
             System.out.println("Incorrect points format.");
             return ADD_POINTS;
         } else {
+            String id = userInputList.get(0);
+            String java = userInputList.get(1);
+            String dsa = userInputList.get(2);
+            String db = userInputList.get(3);
+            String spring = userInputList.get(4);
+            String email = idMap.get(id);
+            int currentJavaPoints = emailMap.get(email).javaPoints;
+            int currentDsaPoints = emailMap.get(email).dsaPoints;
+            int currentDbPoints = emailMap.get(email).databasesPoints;
+            int currentSpringPoints = emailMap.get(email).springPoints;
+            currentJavaPoints += Integer.parseInt(java);
+            currentDsaPoints += Integer.parseInt(dsa);
+            currentDbPoints += Integer.parseInt(db);
+            currentSpringPoints += Integer.parseInt(spring);
+            Student currentStudent = emailMap.get(email);
+            currentStudent.javaPoints = currentJavaPoints;
+            currentStudent.dsaPoints = currentDsaPoints;
+            currentStudent.databasesPoints = currentDbPoints;
+            currentStudent.springPoints = currentSpringPoints;
+            emailMap.put(email, currentStudent);
+            System.out.println("Points updated.");
             return ADD_POINTS;
         }
     }

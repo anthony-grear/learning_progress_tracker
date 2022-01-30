@@ -39,13 +39,14 @@ public class Main {
                 return m.addStudents();
             }
         },
-        ADD_POINTS {
-            @Override
-            public TrackerState nextState() {
-                Main m = new Main();
-                return MAIN_MENU;
-            }
-        },
+//        ADD_POINTS {
+//            @Override
+//            public TrackerState nextState() {
+//                System.out.println("Enter an id and points or 'back' to return:");
+//                Main m = new Main();
+//                return m.addPoints();
+//            }
+//        },
         FIND_STUDENT {
             @Override
             public TrackerState nextState() {
@@ -90,6 +91,24 @@ public class Main {
                 return MAIN_MENU;
         }
     }
+
+
+//    TrackerState addPoints() {
+//        Scanner scanner = new Scanner(System.in);
+//        String userInput = scanner.nextLine();
+//        List<String> userInputList = parseAddPointsInput(userInput);
+//        if ("back".equals(userInputList.get(0))) {
+//            return MAIN_MENU;
+//        } else if (userInputList.size() != 5) {
+//            System.out.println("Incorrect points format.");
+//            return ADD_POINTS;
+//        } else if (!idMap.containsKey(userInputList.get(0))) {
+//            System.out.println("No student is found for id=" + userInputList.get(0) + ".");
+//            return ADD_POINTS;
+//        } else if (userInputList.get(1) || userInputList.get(2) || userInputList.get(3) || userInputList.get(4)) {
+//
+//        }
+//    }
 
     List<String> parseAddPointsInput(String line) {
         String[] lineArray = line.split(" ");

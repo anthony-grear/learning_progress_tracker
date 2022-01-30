@@ -91,6 +91,13 @@ public class Main {
         }
     }
 
+    List<String> parseAddPointsInput(String line) {
+        String[] lineArray = line.split(" ");
+        List<String> addPointsList = Arrays.asList(lineArray);
+        return addPointsList;
+    }
+
+
     TrackerState findStudent() {
         System.out.println("Enter an id or 'back' to return:");
         String inputUserId;

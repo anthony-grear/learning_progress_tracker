@@ -4,14 +4,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static tracker.Main.TrackerState.*;
@@ -21,61 +17,214 @@ public class SampleTest {
     private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
 
     @Test
-    void checkGenerateUserId() {
-        Main main = new Main();
-        boolean b = Pattern.matches("[A-Z]{5}", main.generateUserId());
-        assertTrue(b);
-    }
-
-    @ParameterizedTest
-    @MethodSource("stringFactoryInvalidEmails")
-    void rejectBadEmails(String str) {
+    void parseAddPointsTest() {
+        String input = "10001 5 8 7 3";
         Main m = new Main();
-        assertFalse(m.validateEmail(str));
+        List<String> output = m.parseAddPointsInput(input);
+        assertEquals("10001",output.get(0));
+        assertEquals("5",output.get(1));
+        assertEquals("8",output.get(2));
+        assertEquals("7",output.get(3));
+        assertEquals("3",output.get(4));
     }
 
-    static List<String> stringFactoryInvalidEmails() {
-        return List.of("email@example@example.com", "email.example.com",
-                "@example.com", "#@%^%#$@#$@#.com", "plainaddress", "email@emailxyz");
-    }
-
-    @ParameterizedTest
-    @MethodSource("stringFactoryValidEmails")
-    void acceptValidEmails(String str) {
+    @Test
+    void rejectMoreThanOneAt() {
+        String email = "email@example@example.com";
         Main m = new Main();
-        assertTrue(m.validateEmail(str));
+        assertFalse(m.validateEmail(email));
     }
 
-    static List<String> stringFactoryValidEmails() {
-        return List.of("1@1.1", "1234567890@example.com", "\"email\"@example.com", "email@[123.123.123.123]",
-                "firstname+lastname@example.com", "email@subdomain.example.com", "firstname.lastname@example.com",
-                "name@example.com");
-    }
-
-    @ParameterizedTest
-    @MethodSource("stringFactoryValidNames")
-    void ValidateNames(String str) {
+    @Test
+    void rejectMissingAt() {
+        String email = "email.example.com";
         Main m = new Main();
-        assertFalse(m.invalidateName(str)); //regex catches incorrect names, valid names return false
+        assertFalse(m.validateEmail(email));
     }
 
-    static List<String> stringFactoryValidNames() {
-        return List.of("Anth ony", "Anthony", "Anth'ony","Anth-ony");
-    }
-
-    @ParameterizedTest
-    @MethodSource("stringFactoryInvalidNames")
-    void InvalidateNames(String str) {
+    @Test
+    void rejectNumericEmail() {
+        String email = "1@1.1";
         Main m = new Main();
-        assertTrue(m.invalidateName(str)); //regex catches incorrect names, invalid names return true
+        assertTrue(m.validateEmail(email));
     }
 
-    static List<String> stringFactoryInvalidNames() {
-        return List.of("A", "Anth@ony", "-Anthony", "Anthony-", "Anthony'",
-                "'Anthony", "Antho'-ny", "Antho''ny", "Ant--hony");
+    @Test
+    void rejectMissingLocalName() {
+        String email = "@example.com";
+        Main m = new Main();
+        assertFalse(m.validateEmail(email));
     }
 
-   @Test
+    @Test
+    void rejectRestrictedCharacters() {
+        String email = "#@%^%#$@#$@#.com";
+        Main m = new Main();
+        assertFalse(m.validateEmail(email));
+    }
+
+    @Test
+    void rejectAddress() {
+        String email = "plainaddress";
+        Main m = new Main();
+        assertFalse(m.validateEmail(email));
+    }
+
+    @Test
+    void validateSimpleEmailNumeric() {
+        String email = "1234567890@example.com";
+        Main m = new Main();
+        assertTrue(m.validateEmail(email));
+    }
+
+    @Test
+    void validateSimpleEmailInQuotes() {
+        String email = "\"email\"@example.com";
+        Main m = new Main();
+        assertTrue(m.validateEmail(email));
+    }
+
+    @Test
+    void validateSimpleEmailIPDomainInBrackets() {
+        String email = "email@[123.123.123.123]";
+        Main m = new Main();
+        assertTrue(m.validateEmail(email));
+    }
+
+    @Test
+    void rejectEmailWithoutDot() {
+        String email = "email@emailxyz";
+        Main m = new Main();
+        assertFalse(m.validateEmail(email));
+    }
+
+    @Test
+    void validateSimpleEmailPlus() {
+        String email = "firstname+lastname@example.com";
+        Main m = new Main();
+        assertTrue(m.validateEmail(email));
+    }
+
+    @Test
+    void validateSimpleEmailSubdomain() {
+        String email = "email@subdomain.example.com";
+        Main m = new Main();
+        assertTrue(m.validateEmail(email));
+    }
+
+    @Test
+    void validateSimpleEmailPeriod() {
+        String email = "firstname.lastname@example.com";
+        Main m = new Main();
+        assertTrue(m.validateEmail(email));
+    }
+
+    @Test
+    void validateSimpleEmail() {
+        String email = "name@example.com";
+        Main m = new Main();
+        assertTrue(m.validateEmail(email));
+    }
+
+    @Test
+    void missSpaceInName() {
+        String name = "Anth ony"; //regex should return false because this is a valid name
+        Main m = new Main();
+        assertFalse(m.invalidateName(name));
+    }
+
+    @Test
+    void detectShortName() {
+        String name = "A"; //regex should return true because this is a invalid name
+        Main m = new Main();
+        assertTrue(m.invalidateName(name));
+    }
+
+    @Test
+    void missNormalName() {
+        String name = "Anthony"; //regex should return false because this is a valid name
+        Main m = new Main();
+        assertFalse(m.invalidateName(name));
+    }
+
+    @Test
+    void missSingleApostrophe() {
+        String name = "Anth'ony"; //regex should return false because this is a valid name
+        Main m = new Main();
+        assertFalse(m.invalidateName(name));
+    }
+
+    @Test
+    void missSingleHyphen() {
+        String name = "Anth-ony"; //regex should return false because this is a valid name
+        Main m = new Main();
+        assertFalse(m.invalidateName(name));
+    }
+
+    @Test
+    void detectInvalidCharacter() {
+        String name = "Anth@ony"; //regex should return true because this symbol is not allowed
+        Main m = new Main();
+        assertTrue(m.invalidateName(name));
+    }
+
+    @Test
+    void detectStartWithHyphen() {
+        String name = "-Anthony"; //regex should return true because no first character hyphen
+        Main m = new Main();
+        assertTrue(m.invalidateName(name));
+    }
+
+    @Test
+    void detectEndWithHyphen() {
+        String name = "Anthony-"; //regex should return true because no end character hyphen
+        Main m = new Main();
+        assertTrue(m.invalidateName(name));
+    }
+
+    @Test
+    void detectEndWithApostrophe() {
+        String name = "Anthony'"; //regex should return true because no end character with apostrophe
+        Main m = new Main();
+        assertTrue(m.invalidateName(name));
+    }
+
+    @Test
+    void detectStartWithApostrophe() {
+        String name = "'Anthony"; //regex should return true because no first character wih apostrophe
+        Main m = new Main();
+        assertTrue(m.invalidateName(name));
+    }
+
+    @Test
+    void detectAdjacentApostropheHyphenInName() {
+        String name = "Antho'-ny"; //regex should return true because no adjacent apostrophe hyphen in a name
+        Main m = new Main();
+        assertTrue(m.invalidateName(name));
+    }
+
+    @Test
+    void detectAdjacentHyphenApostropheInName() {
+        String name = "Antho-'ny"; //regex should return true because no adjacent hyphen apostrophe in a name
+        Main m = new Main();
+        assertTrue(m.invalidateName(name));
+    }
+
+    @Test
+    void detectConsecutiveApostrophesInName() {
+        String name = "Antho''ny"; //regex should return true because no double apostrophes in a name
+        Main m = new Main();
+        assertTrue(m.invalidateName(name));
+    }
+
+    @Test
+    void detectConsecutiveHyphensInName() {
+        String name = "Ant--hony"; //regex should return true because no double hyphen in a name
+        Main m = new Main();
+        assertTrue(m.invalidateName(name));
+    }
+
+    @Test
     void testMainMenuSelectionAddStudents() {
         Main menuSelect = new Main();
         String addStudent = "add students";
@@ -112,7 +261,7 @@ public class SampleTest {
         assertEquals("jjobs@example.com", firstLastEmailArray[2]);
     }
 
-    @Nested //testing System.out
+    @Nested
     public class NestedSampleTest {
         @BeforeEach
         public void setUp() {
@@ -164,6 +313,7 @@ public class SampleTest {
             assertEquals(MAIN_MENU, menuSelect.selectMainMenuCommand(back));
             assertEquals("Enter 'exit' to exit the program.", outputStreamCaptor.toString().trim());
         }
+
 
         @AfterEach
         public void tearDown() {

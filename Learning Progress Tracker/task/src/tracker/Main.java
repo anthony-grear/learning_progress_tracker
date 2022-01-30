@@ -50,8 +50,7 @@ public class Main {
             @Override
             public TrackerState nextState() {
                 Main m = new Main();
-                m.findStudent();
-                return MAIN_MENU;
+                return m.findStudent();
             }
         },
         EXIT_TRACKER {
@@ -84,6 +83,7 @@ public class Main {
                 m.listStudents();
                 return MAIN_MENU;
             case "find":
+                System.out.println("Enter an id or 'back' to return:");
                 return FIND_STUDENT;
             case "add points":
                 System.out.println("Enter an id and points or 'back' to return:");
@@ -156,9 +156,8 @@ public class Main {
         return addPointsList;
     }
 
-
     TrackerState findStudent() {
-        System.out.println("Enter an id or 'back' to return:");
+
         String inputUserId;
         do {
             Scanner scanner = new Scanner(System.in);
@@ -174,7 +173,7 @@ public class Main {
                 System.out.println("No student is found for id=" + inputUserId);
             }
         } while (!idMap.containsKey(inputUserId));
-        return MAIN_MENU;
+        return FIND_STUDENT;
     }
 
     void listStudents() {

@@ -9,6 +9,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -18,6 +19,54 @@ import static tracker.Main.TrackerState.*;
 public class SampleTest {
     private final PrintStream standardOut = System.out;
     private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+
+    @Test
+    void checkBadNumbers4() {
+        List<String> list = new ArrayList<>();
+        list.add("AGHDK");
+        list.add("1");
+        list.add("2");
+        list.add("3");
+        list.add("?");
+        Main m = new Main();
+        assertTrue(m.checkForBadNumbers(list));
+    }
+
+    @Test
+    void checkBadNumbers3() {
+        List<String> list = new ArrayList<>();
+        list.add("AGHDK");
+        list.add("-1");
+        list.add("2");
+        list.add("3");
+        list.add("4");
+        Main m = new Main();
+        assertTrue(m.checkForBadNumbers(list));
+    }
+
+    @Test
+    void checkBadNumbers2() {
+        List<String> list = new ArrayList<>();
+        list.add("AGHDK");
+        list.add("11");
+        list.add("2");
+        list.add("3");
+        list.add("4");
+        Main m = new Main();
+        assertFalse(m.checkForBadNumbers(list));
+    }
+
+    @Test
+    void checkBadNumbers() {
+        List<String> list = new ArrayList<>();
+        list.add("AGHDK");
+        list.add("1");
+        list.add("2");
+        list.add("3");
+        list.add("4");
+        Main m = new Main();
+        assertFalse(m.checkForBadNumbers(list));
+    }
 
     @Test
     void parseAddPointsTest() {

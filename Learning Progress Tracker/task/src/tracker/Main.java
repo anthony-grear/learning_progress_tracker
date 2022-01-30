@@ -39,14 +39,14 @@ public class Main {
                 return m.addStudents();
             }
         },
-//        ADD_POINTS {
-//            @Override
-//            public TrackerState nextState() {
-//                System.out.println("Enter an id and points or 'back' to return:");
-//                Main m = new Main();
-//                return m.addPoints();
-//            }
-//        },
+        ADD_POINTS {
+            @Override
+            public TrackerState nextState() {
+                System.out.println("Enter an id and points or 'back' to return:");
+                Main m = new Main();
+                return m.addPoints();
+            }
+        },
         FIND_STUDENT {
             @Override
             public TrackerState nextState() {
@@ -93,22 +93,39 @@ public class Main {
     }
 
 
-//    TrackerState addPoints() {
-//        Scanner scanner = new Scanner(System.in);
-//        String userInput = scanner.nextLine();
-//        List<String> userInputList = parseAddPointsInput(userInput);
-//        if ("back".equals(userInputList.get(0))) {
-//            return MAIN_MENU;
-//        } else if (userInputList.size() != 5) {
-//            System.out.println("Incorrect points format.");
-//            return ADD_POINTS;
-//        } else if (!idMap.containsKey(userInputList.get(0))) {
-//            System.out.println("No student is found for id=" + userInputList.get(0) + ".");
-//            return ADD_POINTS;
-//        } else if (userInputList.get(1) || userInputList.get(2) || userInputList.get(3) || userInputList.get(4)) {
-//
-//        }
-//    }
+    boolean checkForBadNumbers(List<String> userInputList) {
+        if (!Pattern.matches("^[0-9]*$", userInputList.get(1))) {
+            return true;
+        } else if (!Pattern.matches("^[0-9]*$", userInputList.get(2))) {
+            return true;
+        } else if (!Pattern.matches("^[0-9]*$", userInputList.get(3))) {
+            return true;
+        } else if (!Pattern.matches("^[0-9]*$", userInputList.get(4))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    TrackerState addPoints() {
+        Scanner scanner = new Scanner(System.in);
+        String userInput = scanner.nextLine();
+        List<String> userInputList = parseAddPointsInput(userInput);
+        if ("back".equals(userInputList.get(0))) {
+            return MAIN_MENU;
+        } else if (userInputList.size() != 5) {
+            System.out.println("Incorrect points format.");
+            return ADD_POINTS;
+        } else if (!idMap.containsKey(userInputList.get(0))) {
+            System.out.println("No student is found for id=" + userInputList.get(0) + ".");
+            return ADD_POINTS;
+        } else if (checkForBadNumbers(userInputList)) {
+            System.out.println("Incorrect points format.");
+            return ADD_POINTS;
+        } else {
+            return ADD_POINTS;
+        }
+    }
 
     List<String> parseAddPointsInput(String line) {
         String[] lineArray = line.split(" ");

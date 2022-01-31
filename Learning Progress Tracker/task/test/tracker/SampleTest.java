@@ -57,7 +57,7 @@ public class SampleTest {
     }
 
     @Test
-    void checkBadNumbers() {
+    void checkBadNumbers1() {
         List<String> list = new ArrayList<>();
         list.add("AGHDK");
         list.add("1");
@@ -148,8 +148,8 @@ public class SampleTest {
         Main processString = new Main();
         String[] firstLastEmailArray = processString.splitAddStudentsUserInput(firstLastEmail);
         assertEquals("exit", firstLastEmailArray[0]);
-        assertEquals(null, firstLastEmailArray[1]);
-        assertEquals(null, firstLastEmailArray[2]);
+        assertNull(firstLastEmailArray[1]);
+        assertNull(firstLastEmailArray[2]);
     }
 
     @Test

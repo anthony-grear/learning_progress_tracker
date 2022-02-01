@@ -129,8 +129,112 @@ public class Main {
         Main m = new Main();
         ArrayList<String> highestEnrollment = m.returnHighestEnrollmentClass(m.countEnrollment());
         ArrayList<String> lowestEnrollment = m.returnLowestEnrollmentClass(m.countEnrollment());
+        ArrayList<String> highestTasks = m.returnHighestCompletedTasks();
+        ArrayList<String> lowestTasks = m.returnLowestCompletedTasks();
+        ArrayList<String> easiestCourse = m.returnEasiestCourse();
+        ArrayList<String> hardestCourse = m.returnHardestCourse();
         System.out.println("Most popular: " + formatOutput(highestEnrollment));
         System.out.println("Least popular: " + formatOutput(lowestEnrollment));
+        System.out.println("Highest activity: " + formatOutput(highestTasks));
+        System.out.println("Lowest activity: " + formatOutput(lowestTasks));
+        System.out.println("Easiest course: " + formatOutput(easiestCourse));
+        System.out.println("Hardest course: " + formatOutput(hardestCourse));
+    }
+
+    ArrayList<String> returnHardestCourse() {
+        Main m  = new Main();
+        ArrayList<String> output = new ArrayList<>();
+        double[] averagePointsPerTask = m.calculateAveragePointsPerTask();
+        ArrayList<Double> avgPPT = new ArrayList<>();
+        for (double avgPts : averagePointsPerTask) {
+            avgPPT.add(avgPts);
+        }
+        Double min = Collections.min(avgPPT);
+        if (min.equals(avgPPT.get(0))) {
+            output.add("Java");
+        }
+        if (min.equals(avgPPT.get(1))) {
+            output.add("DSA");
+        }
+        if (min.equals(avgPPT.get(2))) {
+            output.add("Databases");
+        }
+        if (min.equals(avgPPT.get(3))) {
+            output.add("Spring");
+        }
+        return output;
+
+    }
+
+    ArrayList<String> returnEasiestCourse() {
+        Main m  = new Main();
+        ArrayList<String> output = new ArrayList<>();
+        double[] averagePointsPerTask = m.calculateAveragePointsPerTask();
+        ArrayList<Double> avgPPT = new ArrayList<>();
+        for (double avgPts : averagePointsPerTask) {
+            avgPPT.add(avgPts);
+        }
+        Double max = Collections.max(avgPPT);
+        if (max.equals(avgPPT.get(0))) {
+            output.add("Java");
+        }
+        if (max.equals(avgPPT.get(1))) {
+            output.add("DSA");
+        }
+        if (max.equals(avgPPT.get(2))) {
+            output.add("Databases");
+        }
+        if (max.equals(avgPPT.get(3))) {
+            output.add("Spring");
+        }
+        return output;
+
+    }
+
+    ArrayList<String> returnLowestCompletedTasks() {
+        ArrayList<Integer> compareList = new ArrayList<>();
+        ArrayList<String> output = new ArrayList<>();
+        compareList.add(javaTaskCount);
+        compareList.add(dsaTaskCount);
+        compareList.add(dbTaskCount);
+        compareList.add(springTaskCount);
+        Integer min = Collections.min(compareList);
+        if (min.equals(compareList.get(0))) {
+            output.add("Java");
+        }
+        if (min.equals(compareList.get(1))) {
+            output.add("DSA");
+        }
+        if (min.equals(compareList.get(2))) {
+            output.add("Databases");
+        }
+        if (min.equals(compareList.get(3))) {
+            output.add("Spring");
+        }
+        return output;
+    }
+
+    ArrayList<String> returnHighestCompletedTasks() {
+        ArrayList<Integer> compareList = new ArrayList<>();
+        ArrayList<String> output = new ArrayList<>();
+        compareList.add(javaTaskCount);
+        compareList.add(dsaTaskCount);
+        compareList.add(dbTaskCount);
+        compareList.add(springTaskCount);
+        Integer max = Collections.max(compareList);
+        if (max.equals(compareList.get(0))) {
+            output.add("Java");
+        }
+        if (max.equals(compareList.get(1))) {
+            output.add("DSA");
+        }
+        if (max.equals(compareList.get(2))) {
+            output.add("Databases");
+        }
+        if (max.equals(compareList.get(3))) {
+            output.add("Spring");
+        }
+        return output;
     }
 
     ArrayList<String> returnLowestEnrollmentClass(int[] enrollmentArray) {

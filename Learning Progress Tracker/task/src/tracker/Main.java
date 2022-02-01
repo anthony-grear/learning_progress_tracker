@@ -1,5 +1,6 @@
 package tracker;
 
+import java.awt.desktop.SystemSleepEvent;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -52,11 +53,20 @@ public class Main {
                 return m.addPoints();
             }
         },
+        STATISTICS_STATE {
+            @Override
+            public TrackerState nextState() {
+                Main m = new Main();
+                m.displayStatistics();
+                return MAIN_MENU;
+            }
+        },
         FIND_STUDENT {
             @Override
             public TrackerState nextState() {
                 Main m = new Main();
-                return m.findStudent();
+                m.findStudent();
+                return FIND_STUDENT;
             }
         },
         EXIT_TRACKER {
@@ -73,6 +83,7 @@ public class Main {
     }
 
     TrackerState selectMainMenuCommand(@NotNull String input) {
+        Main m = new Main();
         switch (input) {
             case "":
                 System.out.println("no input");
@@ -85,7 +96,6 @@ public class Main {
                 System.out.println("Enter 'exit' to exit the program.");
                 return MAIN_MENU;
             case "list":
-                Main m = new Main();
                 m.listStudents();
                 return MAIN_MENU;
             case "find":
@@ -94,20 +104,61 @@ public class Main {
             case "add points":
                 System.out.println("Enter an id and points or 'back' to return:");
                 return ADD_POINTS;
+            case "statistics":
+                System.out.println("Type the name of a course to see details or 'back' to quit:");
+                return STATISTICS_STATE;
             default:
                 System.out.println("Error: unknown command!");
                 return MAIN_MENU;
         }
     }
 
+    String formatOutput(ArrayList<String> strArray) {
+        if (strArray.size() == 1) {
+            return strArray.get(0);
+        } else if (strArray.size() == 2) {
+            return strArray.get(0) + ", " + strArray.get(1);
+        } else if (strArray.size() == 3) {
+            return strArray.get(0) + ", " + strArray.get(1) + ", " + strArray.get(2);
+        } else {
+            return strArray.get(0) + ", " + strArray.get(1) + ", " + strArray.get(2) + ", " + strArray.get(3);
+        }
+    }
+
     void displayStatistics() {
-        System.out.println("Type the name of a course to see details or 'back' to quit:");
-        //not finished
+        Main m = new Main();
+        ArrayList<String> highestEnrollment = m.returnHighestEnrollmentClass(m.countEnrollment());
+        ArrayList<String> lowestEnrollment = m.returnLowestEnrollmentClass(m.countEnrollment());
+        System.out.println("Most popular: " + formatOutput(highestEnrollment));
+        System.out.println("Least popular: " + formatOutput(lowestEnrollment));
+    }
+
+    ArrayList<String> returnLowestEnrollmentClass(int[] enrollmentArray) {
+        List<Integer> list = new ArrayList<>(Arrays.stream(enrollmentArray).boxed().collect(Collectors.toList()));
+        ArrayList<String> output = new ArrayList<>();
+        Integer min = Collections.min(list);
+        int java = enrollmentArray[0];
+        int dsa = enrollmentArray[1];
+        int db = enrollmentArray[2];
+        int spring = enrollmentArray[3];
+        if (min.equals(java)) {
+            output.add("Java");
+        }
+        if (min.equals(dsa)) {
+            output.add("DSA");
+        }
+        if (min.equals(db)) {
+            output.add("Databases");
+        }
+        if (min.equals(spring)) {
+            output.add("Spring");
+        }
+        return output;
     }
 
     ArrayList<String> returnHighestEnrollmentClass(int[] enrollmentArray) {
         List<Integer> list = new ArrayList<>(Arrays.stream(enrollmentArray).boxed().collect(Collectors.toList()));
-        ArrayList<String> output = null;
+        ArrayList<String> output = new ArrayList<>();
         Integer max = Collections.max(list);
         int java = enrollmentArray[0];
         int dsa = enrollmentArray[1];
@@ -411,6 +462,9 @@ public class Main {
         while (!exit) {
             state = state.nextState();
         }
-
+//          Main m = new Main();
+//          int[] arr = {1, 1, 3, 1};
+//          System.out.println(m.returnHighestEnrollmentClass(arr).toString());
+//          System.out.println(m.returnLowestEnrollmentClass(arr).toString());
     }
 }

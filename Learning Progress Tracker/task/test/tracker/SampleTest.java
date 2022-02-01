@@ -148,8 +148,8 @@ public class SampleTest {
         Main processString = new Main();
         String[] firstLastEmailArray = processString.splitAddStudentsUserInput(firstLastEmail);
         assertEquals("exit", firstLastEmailArray[0]);
-        assertNull(firstLastEmailArray[1]);
-        assertNull(firstLastEmailArray[2]);
+        assertEquals(null, firstLastEmailArray[1]);
+        assertEquals(null, firstLastEmailArray[2]);
     }
 
     @Test

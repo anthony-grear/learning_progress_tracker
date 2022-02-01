@@ -402,6 +402,18 @@ public class Main {
             currentStudent.dsaPoints = currentDsaPoints;
             currentStudent.databasesPoints = currentDbPoints;
             currentStudent.springPoints = currentSpringPoints;
+            if (Integer.parseInt(java) > 0) {
+                currentStudent.totalJavaTasks++;
+            }
+            if (Integer.parseInt(dsa) > 0) {
+                currentStudent.totalDsaTasks++;
+            }
+            if (Integer.parseInt(db) > 0) {
+                currentStudent.totalDbTasks++;
+            }
+            if (Integer.parseInt(spring) > 0) {
+                currentStudent.totalSpringTasks++;
+            }
             emailMap.put(email, currentStudent);
             System.out.println("Points updated.");
             return ADD_POINTS;

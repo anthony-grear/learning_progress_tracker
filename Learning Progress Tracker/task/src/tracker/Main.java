@@ -416,6 +416,10 @@ public class Main {
             }
             emailMap.put(email, currentStudent);
             System.out.println("Points updated.");
+            currentStudent.putJavaCompletionPercent();
+            currentStudent.putDsaCompletionPercent();
+            currentStudent.putDbCompletionPercent();
+            currentStudent.putSpringCompletionPercent();
             return ADD_POINTS;
         }
     }
@@ -574,13 +578,36 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        TrackerState state = TrackerState.START_TRACKER;
-        while (!exit) {
-            state = state.nextState();
-        }
-//          Main m = new Main();
-//          int[] arr = {1, 1, 3, 1};
-//          System.out.println(m.returnHighestEnrollmentClass(arr).toString());
-//          System.out.println(m.returnLowestEnrollmentClass(arr).toString());
+//        TrackerState state = TrackerState.START_TRACKER;
+//        while (!exit) {
+//            state = state.nextState();
+//        }
+
+          Student st1 = new Student("st1@example.com", "John", "Denver");
+          st1.userId = "AKSJD";
+          st1.javaPoints = 300;
+          st1.putJavaCompletionPercent();
+          Student st2 = new Student("st2@example.com", "Joe", "Baker");
+          st2.userId = "DSSJD";
+          st2.javaPoints = 300;
+          st2.putJavaCompletionPercent();
+          Student st3 = new Student("st3@example.com", "Jeff", "Collins");
+          st3.userId = "AKLQW";
+          st3.javaPoints = 590;
+          st3.putJavaCompletionPercent();
+          List<Student> list = new ArrayList<>();
+          list.add(st1);
+          list.add(st2);
+          list.add(st3);
+          JavaCompletionComparator sortByJava = new JavaCompletionComparator();
+          for (Student stu : list) {
+              System.out.println(stu.userId + " | " + stu.javaPoints + " | " + stu.javaCompletion);
+          }
+          Collections.sort(list, sortByJava);
+          System.out.println("----------------------------------------------");
+          for (Student stu : list) {
+              System.out.println(stu.userId + " | " + stu.javaPoints + " | " + stu.javaCompletion);
+          };
+
     }
 }

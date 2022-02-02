@@ -3,6 +3,7 @@ package tracker;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
 
 public class Student {
     String email;
@@ -17,10 +18,10 @@ public class Student {
     int totalDsaTasks;
     int totalDbTasks;
     int totalSpringTasks;
-    BigDecimal javaCompletion;
-    BigDecimal dsaCompletion;
-    BigDecimal dbCompletion;
-    BigDecimal springCompletion;
+    String javaCompletion;
+    String dsaCompletion;
+    String dbCompletion;
+    String springCompletion;
 
 
 
@@ -37,34 +38,38 @@ public class Student {
                     this.totalDsaTasks = 0;
                     this.totalDbTasks = 0;
                     this.totalSpringTasks = 0;
-                    this.javaCompletion = BigDecimal.valueOf(0);
-                    this.dsaCompletion = BigDecimal.valueOf(0);
-                    this.dbCompletion = BigDecimal.valueOf(0);
-                    this.springCompletion = BigDecimal.valueOf(0);
+                    this.javaCompletion = String.valueOf(0);
+                    this.dsaCompletion = String.valueOf(0);
+                    this.dbCompletion = String.valueOf(0);
+                    this.springCompletion = String.valueOf(0);
 
     }
 
     void putJavaCompletionPercent() {
-        MathContext rounding = new MathContext(3,RoundingMode.HALF_UP);
-        BigDecimal bd1 = new BigDecimal((double) this.javaPoints / 600 * 100, rounding);
-        this.javaCompletion = bd1;
+        double bd1 = (double) this.javaPoints / 600 * 100;
+        DecimalFormat df = new DecimalFormat("#0.0");
+        df.setRoundingMode(RoundingMode.HALF_UP);
+        this.javaCompletion = df.format(bd1);
     }
 
     void putDsaCompletionPercent() {
-        MathContext rounding = new MathContext(3,RoundingMode.HALF_UP);
-        BigDecimal bd2 = new BigDecimal((double) this.dsaPoints / 400 * 100, rounding);
-        this.dsaCompletion = bd2;
+        double bd2 = (double) this.dsaPoints / 400 * 100;
+        DecimalFormat df = new DecimalFormat("#0.0");
+        df.setRoundingMode(RoundingMode.HALF_UP);
+        this.dsaCompletion = df.format(bd2);
     }
 
     void putDbCompletionPercent() {
-        MathContext rounding = new MathContext(3,RoundingMode.HALF_UP);
-        BigDecimal bd3 = new BigDecimal((double) this.databasesPoints / 480 * 100, rounding);
-        this.dbCompletion = bd3;
+        double bd3 = (double) this.databasesPoints / 480 * 100;
+        DecimalFormat df = new DecimalFormat("#0.0");
+        df.setRoundingMode(RoundingMode.HALF_UP);
+        this.dbCompletion = df.format(bd3);
     }
 
     void putSpringCompletionPercent() {
-        MathContext rounding = new MathContext(3,RoundingMode.HALF_UP);
-        BigDecimal bd4 = new BigDecimal((double) this.springPoints / 550 * 100, rounding);
-        this.springCompletion = bd4;
+        double bd4 = (double) this.springPoints / 550 * 100;
+        DecimalFormat df = new DecimalFormat("#0.0");
+        df.setRoundingMode(RoundingMode.HALF_UP);
+        this.springCompletion = df.format(bd4);
     }
 }

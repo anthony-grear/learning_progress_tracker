@@ -57,16 +57,16 @@ public class Main {
             @Override
             public TrackerState nextState() {
                 Main m = new Main();
-                m.displayStatistics();
-                return MAIN_MENU;
+                Scanner scanner = new Scanner(System.in);
+                String input = scanner.nextLine().strip().toLowerCase();
+                return m.selectStatisticsMenuCommand(input);
             }
         },
         FIND_STUDENT {
             @Override
             public TrackerState nextState() {
                 Main m = new Main();
-                m.findStudent();
-                return FIND_STUDENT;
+                return m.findStudent();
             }
         },
         EXIT_TRACKER {
@@ -80,6 +80,53 @@ public class Main {
         };
 
         public abstract TrackerState nextState();
+    }
+
+    TrackerState selectStatisticsMenuCommand(@NotNull String input) {
+        Main m = new Main();
+        switch (input) {
+            case "back":
+                return MAIN_MENU;
+            case "java":
+                System.out.println("Java");
+                System.out.println("id    points    completed");
+                if (noDataEntered()) {
+                    return STATISTICS_STATE;
+                } else {
+                    m.generateJavaData();
+                }
+                return STATISTICS_STATE;
+            case "dsa":
+                System.out.println("DSA");
+                System.out.println("id    points    completed");
+                if (noDataEntered()) {
+                    return STATISTICS_STATE;
+                } else {
+                    m.generateDsaData();
+                }
+                return STATISTICS_STATE;
+            case "databases":
+                System.out.println("Databases");
+                System.out.println("id    points    completed");
+                if (noDataEntered()) {
+                    return STATISTICS_STATE;
+                } else {
+                    m.generateDbData();
+                }
+                return STATISTICS_STATE;
+            case "spring":
+                System.out.println("Spring");
+                System.out.println("id    points    completed");
+                if (noDataEntered()) {
+                    return STATISTICS_STATE;
+                } else {
+                    m.generateSpringData();
+                }
+                return STATISTICS_STATE;
+            default:
+                System.out.println("Unknown course.");
+                return STATISTICS_STATE;
+        }
     }
 
     TrackerState selectMainMenuCommand(@NotNull String input) {
@@ -106,10 +153,76 @@ public class Main {
                 return ADD_POINTS;
             case "statistics":
                 System.out.println("Type the name of a course to see details or 'back' to quit:");
+                m.displayStatistics();
                 return STATISTICS_STATE;
             default:
                 System.out.println("Error: unknown command!");
                 return MAIN_MENU;
+        }
+    }
+
+    void generateSpringData() {
+        List<Student> studentList = new ArrayList<>(emailMap.values());
+        SpringCompletionComparator sortBySpring = new SpringCompletionComparator();
+        studentList.sort(sortBySpring);
+        for (Student stu: studentList) {
+            if (stu.totalSpringTasks == 0) {
+                assert true;
+            } else {
+                System.out.println(stu.userId + " " + stu.springPoints + "        " + stu.springCompletion+"%");
+
+            }
+        }
+    }
+
+    void generateDbData() {
+        List<Student> studentList = new ArrayList<>(emailMap.values());
+        DbCompletionComparator sortByDb = new DbCompletionComparator();
+        Collections.sort(studentList, sortByDb);
+        for (Student stu: studentList) {
+            if (stu.totalDbTasks == 0) {
+                assert true;
+            } else {
+                System.out.println(stu.userId + " " + stu.databasesPoints + "        " + stu.dbCompletion+"%");
+
+            }
+        }
+    }
+
+    void generateDsaData() {
+        List<Student> studentList = new ArrayList<>(emailMap.values());
+        DsaCompletionComparator sortByDsa = new DsaCompletionComparator();
+        Collections.sort(studentList, sortByDsa);
+        for (Student stu: studentList) {
+            if (stu.totalDsaTasks == 0) {
+                assert true;
+            } else {
+                System.out.println(stu.userId + " " + stu.dsaPoints + "        " + stu.dsaCompletion+"%");
+
+            }
+        }
+    }
+
+    void generateJavaData() {
+        List<Student> studentList = new ArrayList<>(emailMap.values());
+        JavaCompletionComparator sortByJava = new JavaCompletionComparator();
+        Collections.sort(studentList, sortByJava);
+        for (Student stu: studentList) {
+            if (stu.totalJavaTasks == 0) {
+                assert true;
+            } else {
+                System.out.println(stu.userId + " " + stu.javaPoints + "        " + stu.javaCompletion +"%");
+
+            }
+        }
+    }
+
+    boolean noDataEntered() {
+        if (javaTaskCount == 0 && dsaTaskCount == 0 &&
+            dbTaskCount == 0 && springTaskCount == 0) {
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -133,12 +246,30 @@ public class Main {
         ArrayList<String> lowestTasks = m.returnLowestCompletedTasks();
         ArrayList<String> easiestCourse = m.returnEasiestCourse();
         ArrayList<String> hardestCourse = m.returnHardestCourse();
-        System.out.println("Most popular: " + formatOutput(highestEnrollment));
-        System.out.println("Least popular: " + formatOutput(lowestEnrollment));
-        System.out.println("Highest activity: " + formatOutput(highestTasks));
-        System.out.println("Lowest activity: " + formatOutput(lowestTasks));
-        System.out.println("Easiest course: " + formatOutput(easiestCourse));
-        System.out.println("Hardest course: " + formatOutput(hardestCourse));
+        if (noDataEntered()) {
+            System.out.println("Most popular: n/a");
+            System.out.println("Least popular: n/a");
+            System.out.println("Highest activity: n/a");
+            System.out.println("Lowest activity: n/a");
+            System.out.println("Easiest course: n/a");
+            System.out.println("Hardest course: n/a");
+        } else {
+            System.out.println("Most popular: " + formatOutput(highestEnrollment));
+            if (highestEnrollment.size() == 4) {
+                System.out.println("Least popular: n/a");
+            } else {
+                System.out.println("Least popular: " + formatOutput(lowestEnrollment));
+            }
+
+            System.out.println("Highest activity: " + formatOutput(highestTasks));
+            if (highestTasks.size() == 4) {
+                System.out.println("Lowest activity: n/a");
+            } else {
+                System.out.println("Lowest activity: " + formatOutput(lowestTasks));
+            }
+            System.out.println("Easiest course: " + formatOutput(easiestCourse));
+            System.out.println("Hardest course: " + formatOutput(hardestCourse));
+        }
     }
 
     ArrayList<String> returnHardestCourse() {
@@ -430,24 +561,25 @@ public class Main {
     }
 
     TrackerState findStudent() {
-
-        String inputUserId;
-        do {
-            Scanner scanner = new Scanner(System.in);
-            inputUserId = scanner.next();
-            if ("back".equals(inputUserId)) {
+        Scanner scanner = new Scanner(System.in);
+        String inputUserId = scanner.next();
+        switch (inputUserId) {
+            case "back":
                 return MAIN_MENU;
-            } else if (idMap.containsKey(inputUserId)) {
-                String studentEmail = idMap.get(inputUserId);
-                Student student = emailMap.get(studentEmail);
-                System.out.println(inputUserId + " points: Java=" + student.javaPoints + "; DSA=" + student.dsaPoints +
-                        "; Databases=" + student.databasesPoints + "; Spring=" + student.springPoints);
-            } else {
-                System.out.println("No student is found for id=" + inputUserId);
-            }
-        } while (!idMap.containsKey(inputUserId));
-        return FIND_STUDENT;
+            default:
+                if (idMap.containsKey(inputUserId)) {
+                    String studentEmail = idMap.get(inputUserId);
+                    Student student = emailMap.get(studentEmail);
+                    System.out.println(inputUserId + " points: Java=" + student.javaPoints + "; DSA=" + student.dsaPoints +
+                            "; Databases=" + student.databasesPoints + "; Spring=" + student.springPoints);
+                } else {
+                    System.out.println("No student is found for id=" + inputUserId);
+                }
+                return FIND_STUDENT;
+        }
     }
+
+
 
     void listStudents() {
        if (emailMap.isEmpty()) {
@@ -578,36 +710,10 @@ public class Main {
     }
 
     public static void main(String[] args) {
-//        TrackerState state = TrackerState.START_TRACKER;
-//        while (!exit) {
-//            state = state.nextState();
-//        }
-
-          Student st1 = new Student("st1@example.com", "John", "Denver");
-          st1.userId = "AKSJD";
-          st1.javaPoints = 300;
-          st1.putJavaCompletionPercent();
-          Student st2 = new Student("st2@example.com", "Joe", "Baker");
-          st2.userId = "DSSJD";
-          st2.javaPoints = 300;
-          st2.putJavaCompletionPercent();
-          Student st3 = new Student("st3@example.com", "Jeff", "Collins");
-          st3.userId = "AKLQW";
-          st3.javaPoints = 590;
-          st3.putJavaCompletionPercent();
-          List<Student> list = new ArrayList<>();
-          list.add(st1);
-          list.add(st2);
-          list.add(st3);
-          JavaCompletionComparator sortByJava = new JavaCompletionComparator();
-          for (Student stu : list) {
-              System.out.println(stu.userId + " | " + stu.javaPoints + " | " + stu.javaCompletion);
-          }
-          Collections.sort(list, sortByJava);
-          System.out.println("----------------------------------------------");
-          for (Student stu : list) {
-              System.out.println(stu.userId + " | " + stu.javaPoints + " | " + stu.javaCompletion);
-          };
+        TrackerState state = TrackerState.START_TRACKER;
+        while (!exit) {
+            state = state.nextState();
+        }
 
     }
 }

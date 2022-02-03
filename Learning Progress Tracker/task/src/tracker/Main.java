@@ -155,10 +155,52 @@ public class Main {
                 System.out.println("Type the name of a course to see details or 'back' to quit:");
                 m.displayStatistics();
                 return STATISTICS_STATE;
+            case "notify":
+                m.notifyStudents();
+                return MAIN_MENU;
             default:
                 System.out.println("Error: unknown command!");
                 return MAIN_MENU;
         }
+    }
+
+    void notifyStudents() {
+        int count = 0;
+        for (Student student : emailMap.values()) {
+            int checkNotify = 0;
+            if (student.javaPoints == 600 && !student.alreadyNotifiedJavaComplete) {
+                System.out.println("To: " + student.email);
+                System.out.println("Re: Your Learning Progress");
+                System.out.println("Hello, " + student.first_name + " " + student.last_name + "! You have accomplished our Java course!");
+                student.alreadyNotifiedJavaComplete = true;
+                checkNotify++;
+            }
+            if (student.dsaPoints == 400 && !student.alreadyNotifiedDsaComplete) {
+                System.out.println("To: " + student.email);
+                System.out.println("Re: Your Learning Progress");
+                System.out.println("Hello, " + student.first_name + " " + student.last_name + "! You have accomplished our DSA course!");
+                student.alreadyNotifiedDsaComplete = true;
+                checkNotify++;
+            }
+            if (student.databasesPoints == 480 && !student.alreadyNotifiedDbComplete) {
+                System.out.println("To: " + student.email);
+                System.out.println("Re: Your Learning Progress");
+                System.out.println("Hello, " + student.first_name + " " + student.last_name + "! You have accomplished our Databases course!");
+                student.alreadyNotifiedDbComplete = true;
+                checkNotify++;
+            }
+            if (student.springPoints == 550 && !student.alreadyNotifiedSpringComplete) {
+                System.out.println("To: " + student.email);
+                System.out.println("Re: Your Learning Progress");
+                System.out.println("Hello, " + student.first_name + " " + student.last_name + "! You have accomplished our Spring course!");
+                student.alreadyNotifiedSpringComplete = true;
+                checkNotify++;
+            }
+            if (checkNotify > 0) {
+                count++;
+            }
+        }
+        System.out.println("Total " + count + " students have been notified.");
     }
 
     void generateSpringData() {

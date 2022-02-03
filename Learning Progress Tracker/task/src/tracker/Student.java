@@ -22,7 +22,10 @@ public class Student {
     String dsaCompletion;
     String dbCompletion;
     String springCompletion;
-
+    boolean alreadyNotifiedJavaComplete;
+    boolean alreadyNotifiedDsaComplete;
+    boolean alreadyNotifiedDbComplete;
+    boolean alreadyNotifiedSpringComplete;
 
 
     public Student(String email, String first_name, String last_name) {
@@ -42,7 +45,10 @@ public class Student {
                     this.dsaCompletion = String.valueOf(0);
                     this.dbCompletion = String.valueOf(0);
                     this.springCompletion = String.valueOf(0);
-
+                    this.alreadyNotifiedJavaComplete = false;
+                    this.alreadyNotifiedDsaComplete = false;
+                    this.alreadyNotifiedDbComplete = false;
+                    this.alreadyNotifiedSpringComplete = false;
     }
 
     void putJavaCompletionPercent() {
